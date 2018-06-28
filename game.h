@@ -51,6 +51,7 @@ private:
     int m_taskIntervalTime;
     QVector<Task> m_tasks;
     int m_currentTask;
+    bool m_isInCheckAnswer;
 };
 
 #endif // GAME_H

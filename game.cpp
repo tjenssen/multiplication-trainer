@@ -9,6 +9,7 @@
 Game::Game(QObject *parent)
     : QObject(parent)
     , m_taskIntervalTime(0)
+    , m_isInCheckAnswer(false)
 {
     m_score = 0;
     m_remainingTime = 0;
@@ -56,7 +57,7 @@ int Game::intervall()
 
 void Game::update()
 {
-    if (m_remainingTime < 0) {
+    if (m_remainingTime < 0 && !m_isInCheckAnswer) {
         m_secondsTimer.stop();
         emit userMessage("Zeit zu ende - verloren");
         emit end(m_score);
@@ -67,6 +68,7 @@ void Game::update()
 bool Game::checkAnswer(const QString &answer)
 {
     bool result = false;
+    m_isInCheckAnswer = true;
     if (m_tasks.value(m_currentTask).answer == answer) {
         m_score += m_remainingTime/10 + 1;
         emit scoreChanged(m_score);
@@ -85,6 +87,7 @@ bool Game::checkAnswer(const QString &answer)
         emit userMessage("alles geschaft, super!");
         emit end(m_score);
     }
+    m_isInCheckAnswer = false;
     return result;
 }
 
