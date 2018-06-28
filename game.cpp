@@ -21,6 +21,7 @@ Game::Game(QObject *parent)
 void Game::reset(int intervalInSeconds)
 {
     std::srand(QDateTime::currentDateTime().toTime_t());
+    std::random_shuffle(m_tasks.begin(), m_tasks.end());
     m_taskIntervalTime = intervalInSeconds;
     m_score = 0;
     m_secondsTimer.stop();
@@ -84,5 +85,4 @@ bool Game::checkAnswer(const QString &answer)
 void Game::setTasks(const QVector<Task> &tasks)
 {
     m_tasks = tasks;
-    std::random_shuffle(m_tasks.begin(), m_tasks.end());
 }
