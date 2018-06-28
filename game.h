@@ -7,10 +7,12 @@
 
 struct Task
 {
-    Task() {}
+    Task(int aScoreValue = 1) {
+        scoreValue = aScoreValue;
+    }
 
     Task(QString aQuestion, QString aAnswer, QString wrongAnswer1, QString wrongAnswer2, QString wrongAnswer3)
-        : question(aQuestion), answer(aAnswer) {
+        : question(aQuestion), answer(aAnswer), scoreValue(1) {
         possibleAnswers.append(wrongAnswer1);
         possibleAnswers.append(wrongAnswer2);
         possibleAnswers.append(wrongAnswer3);
@@ -19,6 +21,7 @@ struct Task
     QString question;
     QString answer;
     QVector<QString> possibleAnswers;
+    int scoreValue;
 };
 
 class Game : public QObject
@@ -45,11 +48,12 @@ private slots:
     void update();
 
 private:
+    void setScore(int score);
     QTimer m_secondsTimer;
+    QVector<Task> m_tasks;
     int m_score;
     int m_remainingTime;
     int m_taskIntervalTime;
-    QVector<Task> m_tasks;
     int m_currentTask;
     bool m_isInCheckAnswer;
 };

@@ -8,8 +8,12 @@
 
 Game::Game(QObject *parent)
     : QObject(parent)
+    , m_score(0)
+    , m_remainingTime(0)
     , m_taskIntervalTime(0)
+    , m_currentTask(0)
     , m_isInCheckAnswer(false)
+
 {
     m_score = 0;
     m_remainingTime = 0;
@@ -24,10 +28,9 @@ void Game::reset(int intervalInSeconds)
     std::srand(QDateTime::currentDateTime().toTime_t());
     std::random_shuffle(m_tasks.begin(), m_tasks.end());
     m_taskIntervalTime = intervalInSeconds;
-    m_score = 0;
+    setScore(0);
     m_secondsTimer.stop();
     m_currentTask = 0;
-    emit scoreChanged(m_score);
 }
 
 QString Game::nextTask()
@@ -65,19 +68,25 @@ void Game::update()
     emit remainingTimeChanged(m_remainingTime--);
 }
 
+void Game::setScore(int score)
+{
+    m_score = score;
+    emit scoreChanged(m_score);
+}
+
 bool Game::checkAnswer(const QString &answer)
 {
     bool result = false;
     m_isInCheckAnswer = true;
-    if (m_tasks.value(m_currentTask).answer == answer) {
-        m_score += m_remainingTime/10 + 1;
-        emit scoreChanged(m_score);
+    const Task currentTask = m_tasks.value(m_currentTask);
+    if (currentTask.answer == answer) {
+        setScore(m_score + (m_remainingTime + 2)/10 + currentTask.scoreValue);
         emit userMessage("richtig");
         result = true;
     } else {
-        m_score -= m_remainingTime/10 + 1;
+        setScore(m_score - (m_remainingTime + 2)/10 + currentTask.scoreValue);
         emit userMessage(QString("leider falsch - %1 = %2").arg(
-            m_tasks.value(m_currentTask).question, m_tasks.value(m_currentTask).answer));
+            currentTask.question, currentTask.answer));
     }
     m_currentTask++;
     if (m_tasks.count() > m_currentTask)
