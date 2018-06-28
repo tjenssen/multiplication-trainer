@@ -97,8 +97,6 @@ MainWindow::MainWindow(QWidget *parent)
         this, SLOT(updateRemainingTime(int)));
     connect(&m_game, SIGNAL(nextTaskPossible()),
         this, SLOT(updateToNextTask()));
-    connect(&m_game, SIGNAL(end(int)),
-        this, SLOT(updateToNextTask()));
 
 }
 
@@ -166,4 +164,5 @@ void MainWindow::openScoreList(int score)
         form->setScore(score);
     m_game.reset();
     form->exec();
+    startResetGame();
 }

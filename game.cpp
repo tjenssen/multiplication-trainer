@@ -24,6 +24,7 @@ void Game::reset(int intervalInSeconds)
     m_taskIntervalTime = intervalInSeconds;
     m_score = 0;
     m_secondsTimer.stop();
+    m_currentTask = 0;
     emit scoreChanged(m_score);
 }
 
