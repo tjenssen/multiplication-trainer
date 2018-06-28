@@ -1,0 +1,7 @@
+Makefile
+*.pro.user*
+obj/*
+moc/*
+ui/*
+multiplication-trainer*
+debian/*
