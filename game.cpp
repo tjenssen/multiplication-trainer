@@ -68,6 +68,7 @@ bool Game::checkAnswer(const QString &answer)
         emit userMessage("richtig");
         result = true;
     } else {
+        m_score -= m_remainingTime/10 + 1;
         emit userMessage(QString("leider falsch - %1 = %2").arg(
             m_tasks.value(m_currentTask).question, m_tasks.value(m_currentTask).answer));
     }
