@@ -111,13 +111,15 @@ void MainWindow::startResetGame()
         openScoreList(m_game.score());
     } else {
         m_game.reset();
+        ui->progressBar->setMaximum(m_game.intervall());
+        ui->progressBar->setValue(m_game.intervall());
         updateToNextTask();
     }
 }
 
 void MainWindow::updateRemainingTime(int seconds)
 {
-    ui->timeRemainingValue->setText(QString::number(seconds));
+    ui->progressBar->setValue(seconds);
 }
 
 void MainWindow::updateScore(int score)

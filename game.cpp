@@ -8,8 +8,8 @@
 
 Game::Game(QObject *parent)
     : QObject(parent)
+    , m_taskIntervalTime(0)
 {
-    m_taskIntervalTime = 30;
     m_score = 0;
     m_remainingTime = 0;
     m_currentTask = 0;
@@ -47,6 +47,11 @@ QVector<QString> Game::possibleAnswers() const
 int Game::score()
 {
     return m_score;
+}
+
+int Game::intervall()
+{
+    return m_taskIntervalTime;
 }
 
 void Game::update()

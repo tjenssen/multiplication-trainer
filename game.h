@@ -35,11 +35,12 @@ signals:
     void end(int score);
 public:
     void setTasks(const QVector<Task> &tasks);
-    void reset(int intervalInSeconds = 30);
+    void reset(int intervalInSeconds = 20);
     QString nextTask();
     bool checkAnswer(const QString &answer);
     QVector<QString> possibleAnswers() const;
     int score();
+    int intervall();
 private slots:
     void update();
 
