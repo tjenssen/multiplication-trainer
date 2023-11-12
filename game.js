@@ -1,7 +1,11 @@
-//// main.qml
-//
+// vielleicht wäre das mal was für testdriven
+// https://jestjs.io/docs/getting-started
+// bzw. hier ein alter blog beitrag https://www.codecentric.de/wissens-hub/blog/javascript-unit-tests-sind-schwer-aufzusetzen-keep-calm-use-jest
+
 // untested chatgpt result:
 
+//// main.qml
+//
 //import QtQuick 2.0
 //import "game.js" as GameLogic
 //
@@ -14,6 +18,44 @@
 //    }
 //}
 
+
+// game.js
+
+var tasks = []; // An array to hold tasks
+var currentTaskIndex = 0;
+var score = 0;
+var remainingTime = 0; // in seconds
+var taskIntervalTime = 10; // in seconds
+var isInCheckAnswer = false;
+
+function setTasks(newTasks) {
+    tasks = newTasks;
+}
+
+function reset() {
+    currentTaskIndex = 0;
+    score = 0;
+    remainingTime = 0;
+    isInCheckAnswer = false;
+    // Initialize other properties and states as needed
+}
+
+function nextTask() {
+    if (currentTaskIndex < tasks.length - 1) {
+        currentTaskIndex++;
+    } else {
+        // Handle end of tasks list
+    }
+}
+
+function checkAnswer(answer) {
+    if (tasks[currentTaskIndex].answer === answer) {
+        score += tasks[currentTaskIndex].score;
+        nextTask();
+    } else {
+        // Handle wrong answer
+    }
+}
 
 function shuffleArray(array) {
     let currentIndex = array.length, temporaryValue, randomIndex;
@@ -62,4 +104,14 @@ module.exports = {
     similarButWrongAnswer: similarButWrongAnswer,
     shuffleArray: shuffleArray,
     randomNumber: randomNumber
+    setTasks: setTasks,
+    reset: reset,
+    nextTask: nextTask,
+    checkAnswer: checkAnswer,
+    tasks: tasks,
+    currentTaskIndex: currentTaskIndex,
+    score: score,
+    remainingTime: remainingTime,
+    taskIntervalTime: taskIntervalTime,
+    isInCheckAnswer: isInCheckAnswer
 };
