@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QVector>
 
+#include <random>
+
 struct Task
 {
     Task(int aScoreValue = 1) {
@@ -37,6 +39,13 @@ signals:
     void nextTaskPossible();
     void end(int score);
 public:
+    template<typename Container>
+    static void shuffleContainer(Container &container) {
+        static std::random_device randomDevice;
+        static std::mt19937 generator(randomDevice());
+        std::shuffle(container.begin(), container.end(), generator);
+    }
+
     void setTasks(const QVector<Task> &tasks);
     void reset(int intervalInSeconds = 20);
     QString nextTask();

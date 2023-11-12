@@ -1,14 +1,14 @@
 #include "mainwindow.h"
 
-#include <QtGui/QApplication>
+#include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    // verschiedene ideen wie die UI aussehen könnte
+    // verschiedene ideen wie die UI aussehen kÃ¶nnte
     // * ergibnisse fliegen
     // ** unten oder rechts ist eine aufgabe
-    // ** ergebnisse fliegen von einer seite zur anderen seite und können
+    // ** ergebnisse fliegen von einer seite zur anderen seite und kÃ¶nnen
     //    per drag and drop drauf geschoben werden
 
     MainWindow mainWindow;

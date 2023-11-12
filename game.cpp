@@ -1,10 +1,9 @@
 #include "game.h"
 
-#include <algorithm>
-#include <ctime>        // std::time
-#include <cstdlib>      // std::rand, std::srand
-
 #include <QDateTime>
+
+#include <algorithm>
+#include <random>
 
 Game::Game(QObject *parent)
     : QObject(parent)
@@ -20,13 +19,12 @@ Game::Game(QObject *parent)
     m_currentTask = 0;
     m_secondsTimer.setInterval(1000);
     connect(&m_secondsTimer, SIGNAL(timeout()), this, SLOT(update()));
-}
 
+}
 
 void Game::reset(int intervalInSeconds)
 {
-    std::srand(QDateTime::currentDateTime().toTime_t());
-    std::random_shuffle(m_tasks.begin(), m_tasks.end());
+    shuffleContainer(m_tasks);
     m_taskIntervalTime = intervalInSeconds;
     setScore(0);
     m_secondsTimer.stop();
@@ -44,7 +42,7 @@ QVector<QString> Game::possibleAnswers() const
 {
     QVector<QString> answers = m_tasks.value(m_currentTask).possibleAnswers;
     answers.append(m_tasks.value(m_currentTask).answer);
-    std::random_shuffle(answers.begin(), answers.end());
+    shuffleContainer(answers);
     return answers;
 }
 

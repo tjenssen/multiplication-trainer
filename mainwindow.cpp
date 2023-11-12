@@ -14,19 +14,34 @@
 
 #include <QtCore/QCoreApplication>
 #include <QDebug>
-#include <algorithm> //random_shuffle
 
+#include <algorithm>
+#include <random>
 
-int randomNumber()
-{
-    static QVector<int> randomNumbers = QVector<int>()<<1<<2<<3<<4<<5<<6<<7<<8<<9;
-    std::random_shuffle(randomNumbers.begin(), randomNumbers.end());
-    return randomNumbers.first();
+int randomNumber(int from, int to) {
+    std::uniform_int_distribution<int> distribution(from, to);
+    static std::random_device randomDevice;
+    static std::mt19937 engine(randomDevice());
+    return distribution(engine);
 }
 
 int randomResult()
 {
-    return randomNumber() * randomNumber();
+    return randomNumber(1, 9) * randomNumber(1, 9);
+}
+
+QString similarButWrongWrongAnswer(const QString &answer)
+{
+    QString similarAnswer;
+    do {
+        similarAnswer.clear();
+        std::vector<QChar> chars(answer.begin(), answer.end());
+        Game::shuffleContainer(chars);
+        for (QChar ch : chars) {
+            similarAnswer.append(ch);
+        }
+    } while (similarAnswer == answer);
+    return similarAnswer;
 }
 
 class MultiplicationTask : public Task
@@ -36,15 +51,11 @@ class MultiplicationTask : public Task
             : Task() {
             question = QString("%1 x %2").arg(x).arg(y);
             answer = QString::number(x*y);
-            if (answer.count() == 2) {
-                QString firstWrongAnswer;
-                firstWrongAnswer.append(answer.at(1));
-                firstWrongAnswer.append(answer.at(0));
-                possibleAnswers.append(firstWrongAnswer);
-            }
+            if (answer.size() > 1)
+                possibleAnswers.append(similarButWrongWrongAnswer(answer));
             while (possibleAnswers.count() != 3) {
-                const QString possibleAnswer = QString::number(randomNumber()*randomNumber());
-                if (!possibleAnswers.contains(possibleAnswer) && possibleAnswer != answer && possibleAnswer.count() == 2)
+                const QString possibleAnswer = QString::number(randomNumber(1, 9)*randomNumber(1, 9));
+                if (!possibleAnswers.contains(possibleAnswer) && possibleAnswer != answer && possibleAnswer.size() == 2)
                     possibleAnswers.append(possibleAnswer);
             }
         }

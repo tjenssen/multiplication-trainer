@@ -48,7 +48,7 @@ void ScoreForm::addScore()
 
 void ScoreForm::updateName()
 {
-    ui->addButton->setEnabled(ui->nameLineEdit->text().count() != 0);
+    ui->addButton->setEnabled(ui->nameLineEdit->text().size() != 0);
 }
 
 void ScoreForm::updateScoreList()
@@ -56,7 +56,7 @@ void ScoreForm::updateScoreList()
     QStringList scores = m_settings.allKeys();
     scores.removeAll("LastName");
 
-    qSort(scores.begin(), scores.end(), moreThan);
+    std::sort(scores.begin(), scores.end(), moreThan);
 
     QStringList nameWithScoreList;
     foreach (const QString &score, scores) {
